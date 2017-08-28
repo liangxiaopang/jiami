@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js文件模块化改造</title>
+</head>
+<body>
+	<p>md5和base64都是用来对字符串加密的,其中md5内部采用的是function的写法,所有的function都是嵌套的,然后需要输出的时候采用<pre>    if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return md5;
+        });
+    } else {
+        $.md5 = md5;
+    }</pre>来进行umd判断,如果是需要模块化功能,就通过amd规范define输出,如果是普通使用,就挂载到全局对象.</p>
+    <p>而base64采用的是另一种写法,全部的变量和方法属于一大的对象__base64.我改造的方法和md5类似<pre>
+    	if (typeof define === 'function' && define.amd) {
+	    define(function () {
+	        return __BASE64;
+	    });
+	} else {
+	    window.BASE64 = __BASE64;
+	}
+    </pre></p>
+</body>
+<script src="./md5.js"></script>
+<script src="./base64.js"></script>
+</html>
