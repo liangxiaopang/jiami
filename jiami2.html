@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>加密2</title>
+</head>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.js" ></script>
+<script src="http://cdn.bootcss.com/tether/1.3.2/js/tether.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.js"></script>
+<script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
+ <!--<script src="aes_1.js"></script>-->
+<script src="base64.js"></script>
+<script src="src/core.js"></script>
+<script src="src/lib-typedarrays.js"></script>
+<script src="src/x64-core.js"></script>
+<script src="src/enc-utf16.js"></script>
+<script src="src/enc-base64.js"></script>
+<script src="src/md5.js"></script>
+<script src="src/sha1.js"></script>
+<script src="src/sha256.js"></script>
+<script src="src/sha224.js"></script>
+<script src="src/sha512.js"></script>
+<script src="src/sha384.js"></script>
+<script src="src/sha3.js"></script>
+<script src="src/ripemd160.js"></script>
+<script src="src/hmac.js"></script>
+<script src="src/pbkdf2.js"></script>
+<script src="src/evpkdf.js"></script>
+<script src="src/cipher-core.js"></script>
+<script src="src/mode-cfb.js"></script>
+<script src="src/mode-ctr.js"></script>
+<script src="src/mode-ofb.js"></script>
+<script src="src/mode-ecb.js"></script>
+<script src="src/pad-ansix923.js"></script>
+<script src="src/pad-iso10126.js"></script>
+<script src="src/pad-zeropadding.js"></script>
+<script src="src/pad-iso97971.js"></script>
+<script src="src/pad-nopadding.js"></script>
+<script src="src/rc4.js"></script>
+<script src="src/rabbit.js"></script>
+<script src="src/rabbit-legacy.js"></script>
+<script src="src/aes.js"></script>
+<script src="src/tripledes.js"></script>
+<body>
+<div>愿字符:</div><span id="loa"></span>
+<div>加密后的字符</div><span id="enc"></span>
+<div>解密后的字符</div><span id="dec"></span>
+<div>解密后的base64字符</div><span id="base"></span>
+</body>
+<script>
+    var strKey = "MIIEpAIBAAKCAQEAwZzn3VW99IMRaOp";
+    var strVi = "MIIEpAIBAAKCAQEAwZzn3VW99IMRaOp";
+    var MD5Key = md5(strKey);
+    var MD5vi = md5(strVi).substring(0,16);
+    var key = CryptoJS.enc.Utf8.parse(MD5Key);
+    var iv = CryptoJS.enc.Utf8.parse(MD5vi);
+    var opinion = {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.ZeroPadding};
+
+    function Encrypt(app_id,word) {
+        var RandomStr  = 'dfghjklkjhgfdfgh';
+        var appid = md5(app_id);
+        console.log(appid)
+        var str2 = RandomStr+word+appid;
+        var encrypted = CryptoJS.AES.encrypt(str2, key, opinion);
+        return encrypted.toString();
+    }
+    function Decrypt(word) {
+        var decrypt = CryptoJS.AES.decrypt(word, key, opinion);
+        var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+
+        return decryptedStr;
+    }
+    function base64(str){
+        var base64str = BASE64.encoder(str);
+        return base64str;
+    }
+    console.log('nihao ')
+    document.getElementById('loa').innerText='hello'
+    document.getElementById('enc').innerText=Encrypt('xiaopang','hello')
+    document.getElementById('base').innerText=base64('Welcome to Your Vue.js App')
+    document.getElementById('dec').innerText=Decrypt('JE0OqPZXW0VoexcP8RQ9PpWWTuwx/mbe3WK3VqNNHUmTdOzGfu6I8Jo9aIBoI/RcZB7Bs8aepnWyAaAK1e/UNg==')
+    console.log(BASE64.encoder('JE0OqPZXW0VoexcP8RQ9PpWWTuwx/mbe3WK3VqNNHUmTdOzGfu6I8Jo9aIBoI/RcZB7Bs8aepnWyAaAK1e/UNg=='))
+</script>
+</html>

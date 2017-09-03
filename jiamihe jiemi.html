@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="./md5.js"></script>
+<script src="./encrypt/base64.js"></script>
+<script src="./encrypt/core.js"></script>
+<script src="./encrypt/enc-base64.js"></script>
+<script src="./encrypt/cipher-core.js"></script>
+<script src="./encrypt/pad-zeropadding.js"></script>
+<script src="./encrypt/aes.js"></script>
+<body>
+<div>愿字符:</div><span id="loa"></span>
+<div>加密后的字符</div><span id="enc"></span>
+<div>解密后的字符</div><span id="dec"></span>
+</body>
+<script>
+    var strKey = "MIIEpAIBAAKCAQEAwZzn3VW99IMRaOp";
+    var strVi = "MIIEpAIBAAKCAQEAwZzn3VW99IMRaOp";
+    var MD5Key = md5(strKey);
+    var MD5vi = md5(strVi).substring(0,16);
+    var key = CryptoJS.enc.Utf8.parse(MD5Key);
+    var iv = CryptoJS.enc.Utf8.parse(MD5vi);
+    var opinion = {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.ZeroPadding};
+
+    function Encrypt(app_id,word) {
+        var RandomStr  = 'dfghjklkjhgfdfgh';
+        var appid = md5(app_id);
+        console.log(appid)
+        var str2 = RandomStr+word+appid;
+        var encrypted = CryptoJS.AES.encrypt(str2, key, opinion);
+        return encrypted.toString();
+    }
+    function Decrypt(word) {
+        var decrypt = CryptoJS.AES.decrypt(word, key, opinion);
+        var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+
+        return decryptedStr;
+    }
+
+    document.getElementById('loa').innerText='hello'
+    document.getElementById('enc').innerText=Encrypt('xiaopang','hello')
+    document.getElementById('dec').innerText=Decrypt('JE0OqPZXW0VoexcP8RQ9PpWWTuwx/mbe3WK3VqNNHUmTdOzGfu6I8Jo9aIBoI/RcZB7Bs8aepnWyAaAK1e/UNg==')
+    console.log(BASE64.encoder('JE0OqPZXW0VoexcP8RQ9PpWWTuwx/mbe3WK3VqNNHUmTdOzGfu6I8Jo9aIBoI/RcZB7Bs8aepnWyAaAK1e/UNg=='))
+</script>
+</html>
